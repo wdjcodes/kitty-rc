@@ -9,13 +9,12 @@ fn main() {
     println!("{}", path);
     let mut client = Client::connect(path).unwrap();
 
-    let command = b"{\"cmd\":\"get-colors\",\"version\":[0,26,5]}";
-    let mut bytes = client.send_command(command).unwrap();
+    let command = b"{\"cmd\":\"ls\",\"version\":[0,26,5]}";
+    let bytes = client.send_command(command).unwrap();
     println!("Sent {bytes} bytes");
     
-    let mut response = [0u8; 15000];
+    let response;
 
-    bytes = client.get_response(&mut response).unwrap();
-    println!("{}", String::from_utf8_lossy(&response).to_string());
-    println!("Received {bytes} bytes");
+    response = client.get_response().unwrap();
+    println!("{}", response.data());
 }
